@@ -32,6 +32,10 @@ body,
     z-index: 200;
 }
 
+.emojipicker {
+    position: absolute;
+}
+
 /* Message.js */
 .message__self {
     border-left: 2px solid orange;
@@ -39,7 +43,7 @@ body,
 }
 
 .message__image {
-    paddinge: 1em;
+    padding: 1em;
 }
 
 /* ProgressBar.js */
