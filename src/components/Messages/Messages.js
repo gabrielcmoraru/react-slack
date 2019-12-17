@@ -299,7 +299,10 @@ class Messages extends React.Component {
                 />
 
                 <Segment>
-                    <Comment.Group className='messages'>
+                    <Comment.Group
+                        className='messages'
+                        style={{ maxWidth: "100%" }}
+                    >
                         {this.displayMessageSkeleton(messagesLoading)}
                         {searchTerm
                             ? this.displayMessages(searchResults)
