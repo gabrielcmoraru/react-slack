@@ -8,6 +8,8 @@ import MessagesHeader from "./MessagesHeader";
 import MessageForm from "./MessageForm";
 import Message from "./Message";
 import Typing from "./Typing";
+import Skeleton from "./Skeleton";
+
 class Messages extends React.Component {
     state = {
         privateChannel: this.props.isPrivateChannel,
@@ -19,7 +21,6 @@ class Messages extends React.Component {
         isChannelStarred: false,
         user: this.props.currentUser,
         usersRef: firebase.database().ref("users"),
-        progressBar: false,
         numUniqueUsers: "",
         searchTerm: "",
         searchLoading: false,
@@ -55,7 +56,6 @@ class Messages extends React.Component {
 
     addTypingListeners = channelId => {
         let typingUsers = [];
-
         this.state.typingRef.child(channelId).on("child_added", snap => {
             if (snap.key !== this.state.user.uid) {
                 typingUsers = typingUsers.concat({
@@ -149,7 +149,7 @@ class Messages extends React.Component {
                 .child(this.state.channel.id)
                 .remove(err => {
                     if (err !== null) {
-                        console.log(err);
+                        console.error(err);
                     }
                 });
         }
@@ -178,9 +178,7 @@ class Messages extends React.Component {
             return acc;
         }, []);
         this.setState({ searchResults });
-        setTimeout(() => {
-            this.setState({ searchLoading: false });
-        }, 1000);
+        setTimeout(() => this.setState({ searchLoading: false }), 1000);
     };
 
     countUniqueUsers = messages => {
@@ -209,6 +207,7 @@ class Messages extends React.Component {
         }, {});
         this.props.setUserPosts(userPosts);
     };
+
     displayMessages = messages =>
         messages.length > 0 &&
         messages.map(message => (
@@ -218,12 +217,6 @@ class Messages extends React.Component {
                 user={this.state.user}
             />
         ));
-
-    isProgressBarVisible = percent => {
-        if (percent > 0) {
-            this.setState({ progressBar: true });
-        }
-    };
 
     displayChannelName = channel => {
         return channel
@@ -242,26 +235,23 @@ class Messages extends React.Component {
                 }}
                 key={user.id}
             >
-                <span className='user_typing'>{user.name} is typing</span>{" "}
+                <span className='user__typing'>{user.name} is typing</span>{" "}
                 <Typing />
             </div>
         ));
 
+    displayMessageSkeleton = loading =>
+        loading ? (
+            <React.Fragment>
+                {[...Array(10)].map((_, i) => (
+                    <Skeleton key={i} />
+                ))}
+            </React.Fragment>
+        ) : null;
+
     render() {
-        const {
-            messagesRef,
-            messages,
-            channel,
-            user,
-            progressBar,
-            numUniqueUsers,
-            searchTerm,
-            searchResults,
-            searchLoading,
-            privateChannel,
-            isChannelStarred,
-            typingUsers
-        } = this.state;
+        // prettier-ignore
+        const { messagesRef, messages, channel, user, numUniqueUsers, searchTerm, searchResults, searchLoading, privateChannel, isChannelStarred, typingUsers, messagesLoading } = this.state;
 
         return (
             <React.Fragment>
@@ -276,16 +266,13 @@ class Messages extends React.Component {
                 />
 
                 <Segment>
-                    <Comment.Group
-                        className={
-                            progressBar ? "messages__progress" : "messages"
-                        }
-                    >
+                    <Comment.Group className='messages'>
+                        {this.displayMessageSkeleton(messagesLoading)}
                         {searchTerm
                             ? this.displayMessages(searchResults)
                             : this.displayMessages(messages)}
                         {this.displayTypingUsers(typingUsers)}
-                        <div ref={node => (this.messagesEnd = node)}></div>
+                        <div ref={node => (this.messagesEnd = node)} />
                     </Comment.Group>
                 </Segment>
 
@@ -293,7 +280,6 @@ class Messages extends React.Component {
                     messagesRef={messagesRef}
                     currentChannel={channel}
                     currentUser={user}
-                    isProgressBarVisible={this.isProgressBarVisible}
                     isPrivateChannel={privateChannel}
                     getMessagesRef={this.getMessagesRef}
                 />

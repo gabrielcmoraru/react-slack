@@ -1,15 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import firebase from "../../firebase";
 import { connect } from "react-redux";
 import { setCurrentChannel, setPrivateChannel } from "../../actions";
 import { Menu, Icon } from "semantic-ui-react";
 
-class DirectMessages extends Component {
+class DirectMessages extends React.Component {
     state = {
         activeChannel: "",
-        usersRef: firebase.database().ref("users"),
         user: this.props.currentUser,
         users: [],
+        usersRef: firebase.database().ref("users"),
         connectedRef: firebase.database().ref(".info/connected"),
         presenceRef: firebase.database().ref("presence")
     };
@@ -38,7 +38,7 @@ class DirectMessages extends Component {
                 ref.set(true);
                 ref.onDisconnect().remove(err => {
                     if (err !== null) {
-                        console.log(err);
+                        console.error(err);
                     }
                 });
             }
@@ -64,7 +64,6 @@ class DirectMessages extends Component {
             }
             return acc.concat(user);
         }, []);
-
         this.setState({ users: updatedUsers });
     };
 
@@ -76,7 +75,6 @@ class DirectMessages extends Component {
             id: channelId,
             name: user.name
         };
-
         this.props.setCurrentChannel(channelData);
         this.props.setPrivateChannel(true);
         this.setActiveChannel(user.uid);
@@ -122,6 +120,7 @@ class DirectMessages extends Component {
         );
     }
 }
+
 export default connect(null, { setCurrentChannel, setPrivateChannel })(
     DirectMessages
 );

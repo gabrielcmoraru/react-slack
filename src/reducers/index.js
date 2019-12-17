@@ -3,8 +3,7 @@ import * as actionTypes from "../actions/types";
 
 const initialUserState = {
     currentUser: null,
-    isLoading: true,
-    userPosts: null
+    isLoading: true
 };
 
 const user_reducer = (state = initialUserState, action) => {
@@ -24,12 +23,13 @@ const user_reducer = (state = initialUserState, action) => {
     }
 };
 
-const initialChannel = {
+const initialChannelState = {
     currentChannel: null,
-    isPrivateChannel: false
+    isPrivateChannel: false,
+    userPosts: null
 };
 
-const channel_reducer = (state = initialChannel, action) => {
+const channel_reducer = (state = initialChannelState, action) => {
     switch (action.type) {
         case actionTypes.SET_CURRENT_CHANNEL:
             return {

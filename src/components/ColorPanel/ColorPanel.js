@@ -2,16 +2,8 @@ import React from "react";
 import firebase from "../../firebase";
 import { connect } from "react-redux";
 import { setColors } from "../../actions";
-import {
-    Sidebar,
-    Menu,
-    Divider,
-    Button,
-    Modal,
-    Icon,
-    Label,
-    Segment
-} from "semantic-ui-react";
+// prettier-ignore
+import { Sidebar, Menu, Divider, Button, Modal, Icon, Label, Segment } from "semantic-ui-react";
 import { SliderPicker } from "react-color";
 
 class ColorPanel extends React.Component {
@@ -83,7 +75,7 @@ class ColorPanel extends React.Component {
                         <div
                             className='color__overlay'
                             style={{ background: color.secondary }}
-                        ></div>
+                        />
                     </div>
                 </div>
             </React.Fragment>
@@ -125,6 +117,7 @@ class ColorPanel extends React.Component {
                                 onChange={this.handleChangePrimary}
                             />
                         </Segment>
+
                         <Segment inverted>
                             <Label content='Secondary Color' />
                             <SliderPicker

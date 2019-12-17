@@ -19,9 +19,7 @@ class MetaPanel extends React.Component {
         const { index } = titleProps;
         const { activeIndex } = this.state;
         const newIndex = activeIndex === index ? -1 : index;
-        this.setState({
-            activeIndex: newIndex
-        });
+        this.setState({ activeIndex: newIndex });
     };
 
     formatCount = num =>
@@ -29,7 +27,7 @@ class MetaPanel extends React.Component {
 
     displayTopPosters = posts =>
         Object.entries(posts)
-            .sort((a, b) => b[1].count - a[1].count)
+            .sort((a, b) => b[1] - a[1])
             .map(([key, val], i) => (
                 <List.Item key={i}>
                     <Image avatar src={val.avatar} />
@@ -67,6 +65,7 @@ class MetaPanel extends React.Component {
                     <Accordion.Content active={activeIndex === 0}>
                         {channel && channel.details}
                     </Accordion.Content>
+
                     <Accordion.Title
                         active={activeIndex === 1}
                         index={1}
@@ -81,6 +80,7 @@ class MetaPanel extends React.Component {
                             {userPosts && this.displayTopPosters(userPosts)}
                         </List>
                     </Accordion.Content>
+
                     <Accordion.Title
                         active={activeIndex === 2}
                         index={2}

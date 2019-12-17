@@ -25,6 +25,7 @@ class MessageForm extends React.Component {
     };
 
     openModal = () => this.setState({ modal: true });
+
     closeModal = () => this.setState({ modal: false });
 
     handleChange = event => {
@@ -150,11 +151,10 @@ class MessageForm extends React.Component {
                         const percentUploaded = Math.round(
                             (snap.bytesTransferred / snap.totalBytes) * 100
                         );
-                        this.props.isProgressBarVisible(percentUploaded);
                         this.setState({ percentUploaded });
                     },
                     err => {
-                        console.log(err);
+                        console.error(err);
                         this.setState({
                             errors: this.state.errors.concat(err),
                             uploadState: "error",
@@ -172,7 +172,7 @@ class MessageForm extends React.Component {
                                 );
                             })
                             .catch(err => {
-                                console.log(err);
+                                console.error(err);
                                 this.setState({
                                     errors: this.state.errors.concat(err),
                                     uploadState: "error",
@@ -193,22 +193,16 @@ class MessageForm extends React.Component {
                 this.setState({ uploadState: "done" });
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
                 this.setState({
                     errors: this.state.errors.concat(err)
                 });
             });
     };
+
     render() {
-        const {
-            errors,
-            message,
-            loading,
-            modal,
-            uploadState,
-            percentUploaded,
-            emojiPicker
-        } = this.state;
+        // prettier-ignore
+        const { errors, message, loading, modal, uploadState, percentUploaded, emojiPicker } = this.state;
 
         return (
             <Segment className='message__form'>

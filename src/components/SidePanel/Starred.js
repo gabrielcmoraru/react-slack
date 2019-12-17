@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import firebase from "../../firebase";
 import { connect } from "react-redux";
 import { setCurrentChannel, setPrivateChannel } from "../../actions";
 import { Menu, Icon } from "semantic-ui-react";
 
-class Starred extends Component {
+class Starred extends React.Component {
     state = {
         user: this.props.currentUser,
         usersRef: firebase.database().ref("users"),
@@ -79,7 +79,7 @@ class Starred extends Component {
                     <span>
                         <Icon name='star' /> STARRED
                     </span>{" "}
-                    ({starredChannels.length}){" "}
+                    ({starredChannels.length})
                 </Menu.Item>
                 {this.displayChannels(starredChannels)}
             </Menu.Menu>
@@ -87,4 +87,4 @@ class Starred extends Component {
     }
 }
 
-export default connect(null, { setPrivateChannel, setCurrentChannel })(Starred);
+export default connect(null, { setCurrentChannel, setPrivateChannel })(Starred);

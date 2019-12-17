@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import mime from "mime-types";
 import { Modal, Input, Button, Icon } from "semantic-ui-react";
 
-export default class FileModal extends Component {
+class FileModal extends React.Component {
     state = {
         file: null,
         authorized: ["image/jpeg", "image/png"]
@@ -36,6 +36,7 @@ export default class FileModal extends Component {
 
     render() {
         const { modal, closeModal } = this.props;
+
         return (
             <Modal basic open={modal} onClose={closeModal}>
                 <Modal.Header>Select an Image File</Modal.Header>
@@ -60,3 +61,5 @@ export default class FileModal extends Component {
         );
     }
 }
+
+export default FileModal;

@@ -23,10 +23,12 @@ import rootReducer from "./reducers";
 import { setUser, clearUser } from "./actions";
 
 const store = createStore(rootReducer, composeWithDevTools());
+
 class Root extends React.Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
+                // console.log(user);
                 this.props.setUser(user);
                 this.props.history.push("/");
             } else {
@@ -49,12 +51,12 @@ class Root extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateFromProps = state => ({
     isLoading: state.user.isLoading
 });
 
 const RootWithAuth = withRouter(
-    connect(mapStateToProps, { setUser, clearUser })(Root)
+    connect(mapStateFromProps, { setUser, clearUser })(Root)
 );
 
 ReactDOM.render(

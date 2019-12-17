@@ -12,6 +12,7 @@ class MessagesHeader extends React.Component {
             handleStar,
             isChannelStarred
         } = this.props;
+
         return (
             <Segment clearing>
                 {/* Channel Title */}
